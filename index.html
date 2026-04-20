@@ -82,8 +82,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-h
 .err a{color:var(--red);cursor:pointer}
 .modal-bg{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
-.mbox{background:var(--sf);border-radius:16px;border:1px solid rgba(255,255,255,.09);width:100%;max-width:1020px;max-height:95vh;overflow-y:auto;position:relative}
-.mpl{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px 16px 0 0;overflow:hidden;min-height:360px;position:relative}
+.mbox{background:var(--sf);border-radius:16px;border:1px solid rgba(255,255,255,.09);width:100%;max-width:840px;max-height:92vh;overflow-y:auto;position:relative}
+.mpl{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px 16px 0 0;overflow:hidden}
 .mpl iframe{width:100%;height:100%;border:none}
 .min{padding:20px 26px}
 .mtt{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;margin-bottom:7px}
@@ -242,7 +242,7 @@ footer{background:var(--sf);border-top:1px solid var(--bd);padding:32px 42px;mar
 <div class="modal-bg" id="MOD" onclick="cib(event)">
   <div class="mbox">
     <button class="mcl" onclick="closeM()">&#10005;</button>
-    <div class="mpl" id="MPL"><div id="PLOADING" style="display:flex;align-items:center;justify-content:center;height:100%;color:#7878a0;font-size:13px;gap:10px"><div class="spin"></div>Loading player...</div><iframe id="MIF" src="" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation"></iframe></div>
+    <div class="mpl"><iframe id="MIF" src="" allowfullscreen allow="autoplay;fullscreen;picture-in-picture"></iframe></div>
     <div class="min">
       <div class="mad">
         <script async="async" data-cfasync="false" src="https://pl29179443.profitablecpmratenetwork.com/7594566784b53271e2ecb74d669b0f41/invoke.js"></script>
@@ -337,13 +337,28 @@ function mkCard(item){
   const yr=(item.first_air_date||item.release_date||'').slice(0,4);
   const rt=item.vote_average?item.vote_average.toFixed(1):'?';
   const ps=item.poster_path?IMG+item.poster_path:'https://placehold.co/300x450/18182a/7878a0?text=No+Image';
+  // Store all needed data directly on item to avoid lookup issues
+  const data={
+    id:item.id,
+    media_type:tp,
+    name:tt,
+    title:tt,
+    overview:item.overview||'',
+    vote_average:item.vote_average||0,
+    first_air_date:item.first_air_date||'',
+    release_date:item.release_date||'',
+    poster_path:item.poster_path||'',
+    backdrop_path:item.backdrop_path||'',
+    _tp:tp,_tt:tt,_yr:yr,_rt:rt,_ps:ps
+  };
   const d=document.createElement('div');
   d.className='card';
-  d.innerHTML='<img src="'+ps+'" alt="'+tt.replace(/"/g,'')+'" loading="lazy">'+
+  d.innerHTML='<img src="'+ps+'" alt="'+tt.replace(/"/g,'&quot;')+'" loading="lazy" onerror="this.src='https://placehold.co/300x450/18182a/7878a0?text=No+Image'">'+
     '<div class="pb"><div class="pc"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>'+
     '<div class="cov"><div class="cn">'+tt+'</div>'+
     '<div class="ci"><span class="cst">&#9733;</span><span>'+rt+'</span><span>&#183;</span><span>'+(yr||'?')+'</span><span>&#183;</span><span>'+(tp==='tv'?'Series':'Movie')+'</span></div></div>';
-  d.onclick=()=>openM(Object.assign({},item,{_tp:tp,_tt:tt,_yr:yr,_rt:rt,_ps:ps}));
+  // Use direct onclick with stored data — most reliable
+  d.onclick=function(){ openM(data); };
   return d;
 }
 
@@ -455,14 +470,13 @@ async function openM(item){
     '<span class="mtg">'+(yr||'—')+'</span>'+
     '<span class="mtg">'+(tp==='tv'?'&#128250; Series':'&#127916; Movie')+'</span>';
   document.getElementById('MSRC').innerHTML=
-    '<button class="srct active" onclick="swSrc(0,this)">&#11088; VidLink</button>'+
+    '<div style="font-size:11px;color:#4ade80;margin-bottom:8px">&#10003; If video is wrong or not loading — click another server</div>'+
+    '<button class="srct active" onclick="swSrc(0,this)">&#9654; VidSrc.me</button>'+
     '<button class="srct" onclick="swSrc(1,this)">VidSrc.cc</button>'+
-    '<button class="srct" onclick="swSrc(2,this)">VidBinge</button>'+
-    '<button class="srct" onclick="swSrc(3,this)">VidSrc.me</button>'+
-    '<button class="srct" onclick="swSrc(4,this)">VidSrc.to</button>'+
-    '<button class="srct" onclick="swSrc(5,this)">Embed.su</button>'+
-    '<button class="srct" onclick="swSrc(6,this)">MoviesAPI</button>'+
-    '<button class="srct" onclick="swSrc(7,this)">111Movies</button>';
+    '<button class="srct" onclick="swSrc(2,this)">VidSrc.to</button>'+
+    '<button class="srct" onclick="swSrc(3,this)">VidLink</button>'+
+    '<button class="srct" onclick="swSrc(4,this)">Embed.su</button>'+
+    '<button class="srct" onclick="swSrc(5,this)">MoviesAPI</button>';
   const ep=document.getElementById('MEP');
   if(tp==='tv'){
     ep.innerHTML=spin('Loading episodes...');
@@ -488,42 +502,33 @@ async function openM(item){
 }
 
 async function loadP(item,tp,s,e,si){
-  const ifrm=document.getElementById('MIF');
-  const loader=document.getElementById('PLOADING');
-  ifrm.style.display='none';
-  if(loader)loader.style.display='flex';
   const tid=String(item.id);
   const imdb=await getImdb(tid,tp==='tv'?'tv':'movie');
-  const isI=!!imdb;
-  // All servers — same style as 123chill
+  // Use TMDB id for all servers — most reliable, no wrong video issue
+  // vidsrc.me with tmdb id is the most accurate match
   const tv=[
-    'https://vidlink.pro/tv/'+tid+'/'+s+'/'+e+'?primaryColor=E53935&autoplay=true&nextbutton=true',
-    isI?'https://vidsrc.cc/v2/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.cc/v2/embed/tv/'+tid+'/'+s+'/'+e,
-    isI?'https://vidbinge.dev/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidbinge.dev/embed/tv/'+tid+'/'+s+'/'+e,
-    isI?'https://vidsrc.me/embed/tv?imdb='+imdb+'&season='+s+'&episode='+e:'https://vidsrc.me/embed/tv?tmdb='+tid+'&season='+s+'&episode='+e,
-    isI?'https://vidsrc.to/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.to/embed/tv/'+tid+'/'+s+'/'+e,
-    isI?'https://embed.su/embed/tv/'+imdb+'/'+s+'/'+e:'https://embed.su/embed/tv/'+tid+'/'+s+'/'+e,
+    'https://vidsrc.me/embed/tv?tmdb='+tid+'&season='+s+'&episode='+e,
+    'https://vidsrc.cc/v2/embed/tv/'+tid+'/'+s+'/'+e,
+    imdb?'https://vidsrc.to/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.to/embed/tv/'+tid+'/'+s+'/'+e,
+    'https://vidlink.pro/tv/'+tid+'/'+s+'/'+e+'?autoplay=true&title=true',
+    imdb?'https://embed.su/embed/tv/'+imdb+'/'+s+'/'+e:'https://embed.su/embed/tv/'+tid+'/'+s+'/'+e,
     'https://moviesapi.club/tv/'+tid+'-'+s+'-'+e,
-    'https://111movies.com/tv/'+tid+'/'+s+'/'+e,
   ];
   const mv=[
-    'https://vidlink.pro/movie/'+tid+'?primaryColor=E53935&autoplay=true',
-    isI?'https://vidsrc.cc/v2/embed/movie/'+imdb:'https://vidsrc.cc/v2/embed/movie/'+tid,
-    isI?'https://vidbinge.dev/embed/movie/'+imdb:'https://vidbinge.dev/embed/movie/'+tid,
-    isI?'https://vidsrc.me/embed/movie?imdb='+imdb:'https://vidsrc.me/embed/movie?tmdb='+tid,
-    isI?'https://vidsrc.to/embed/movie/'+imdb:'https://vidsrc.to/embed/movie/'+tid,
-    isI?'https://embed.su/embed/movie/'+imdb:'https://embed.su/embed/movie/'+tid,
+    'https://vidsrc.me/embed/movie?tmdb='+tid,
+    'https://vidsrc.cc/v2/embed/movie/'+tid,
+    imdb?'https://vidsrc.to/embed/movie/'+imdb:'https://vidsrc.to/embed/movie/'+tid,
+    'https://vidlink.pro/movie/'+tid+'?autoplay=true&title=true',
+    imdb?'https://embed.su/embed/movie/'+imdb:'https://embed.su/embed/movie/'+tid,
     'https://moviesapi.club/movie/'+tid,
-    'https://111movies.com/movie/'+tid,
   ];
   const list=tp==='tv'?tv:mv;
   const url=list[si%list.length];
-  ifrm.src='';
-  ifrm.onload=()=>{
-    ifrm.style.display='block';
-    if(loader)loader.style.display='none';
-  };
-  setTimeout(()=>{ifrm.src=url;},150);
+  console.log('[SF] Server '+(si+1)+' | tmdb:'+tid+' | imdb:'+imdb+' | url:'+url);
+  // Clear first then set — forces reload even if same url
+  const mif=document.getElementById('MIF');
+  mif.src='about:blank';
+  setTimeout(()=>{ mif.src=url; },150);
 }
 
 function swSrc(i,btn){CSR=i;document.querySelectorAll('.srct').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tp=CI._tp||(CI.first_air_date?'tv':'movie');loadP(CI,tp,CS,CE,i);}
