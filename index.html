@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamFlix - Watch Free Movies, KDrama, Anime & More</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://pl29179442.profitablecpmratenetwork.com/95/82/63/958263de5e9260d3807dc31f533e793c.js"></script>
+<style>
+:root{--red:#E53935;--rd:#B71C1C;--gold:#FFD700;--bg:#080810;--sf:#10101c;--s2:#18182a;--s3:#202035;--tx:#f0f0f8;--mu:#7878a0;--bd:rgba(255,255,255,.07)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:212px;z-index:200;background:var(--sf);border-right:1px solid var(--bd);display:flex;flex-direction:column;transition:transform .3s}
+.slogo{font-family:'Bebas Neue',sans-serif;font-size:25px;letter-spacing:3px;color:var(--red);padding:20px 20px 13px;border-bottom:1px solid var(--bd)}
+.slogo small{color:var(--mu);font-size:10px;display:block;letter-spacing:1px;font-family:'DM Sans',sans-serif;font-weight:400;margin-top:2px}
+.slbl{font-size:9px;font-weight:600;letter-spacing:2px;color:var(--mu);text-transform:uppercase;padding:14px 20px 5px}
+.snav{flex:1;overflow-y:auto;padding-bottom:14px}
+.snav::-webkit-scrollbar{width:0}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 20px;color:var(--mu);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;transition:all .2s}
+.ni:hover{color:var(--tx);background:rgba(255,255,255,.04)}
+.ni.active{color:var(--tx);border-left-color:var(--red);background:rgba(229,57,53,.08)}
+.ndiv{height:1px;background:var(--bd);margin:8px 20px}
+.main{margin-left:212px;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(8,8,16,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 32px;height:56px;display:flex;align-items:center;gap:14px}
+.sw{position:relative;flex:1;max-width:420px}
+.sw input{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:8px 13px 8px 37px;color:var(--tx);font-family:inherit;font-size:13px;outline:none;transition:border-color .2s}
+.sw input:focus{border-color:var(--red)}
+.sw input::placeholder{color:var(--mu)}
+.sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--mu);pointer-events:none}
+.tbb{background:var(--s2);border:1px solid var(--bd);color:var(--mu);border-radius:6px;padding:6px 13px;font-size:12px;font-family:inherit;cursor:pointer;transition:all .2s}
+.tbb:hover{color:var(--tx)}
+.tbb.pr{background:var(--red);border-color:var(--red);color:#fff}
+.mbt{display:none;background:none;border:none;color:var(--tx);font-size:22px;cursor:pointer;margin-right:6px}
+.hero{height:84vh;min-height:500px;position:relative;display:flex;align-items:flex-end;padding:0 42px 58px;overflow:hidden}
+.hbg{position:absolute;inset:0;background-size:cover;background-position:center top;transition:background-image .6s}
+.hov{position:absolute;inset:0;background:linear-gradient(to right,rgba(8,8,16,.97) 30%,rgba(8,8,16,.3) 65%,transparent),linear-gradient(to top,rgba(8,8,16,1) 0%,transparent 42%)}
+.hcon{position:relative;z-index:2;max-width:520px}
+.htgs{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.htg{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid}
+.htg.hot{background:rgba(229,57,53,.2);border-color:var(--red);color:#ff7070}
+.htg.gn{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.13);color:var(--mu)}
+.htt{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,80px);line-height:.92;letter-spacing:2px;margin-bottom:14px;text-shadow:0 4px 28px rgba(0,0,0,.7)}
+.hmt{display:flex;align-items:center;gap:13px;font-size:12px;color:var(--mu);margin-bottom:13px;flex-wrap:wrap}
+.hmt .st{color:var(--gold);font-weight:700}
+.hmt .dt{width:3px;height:3px;background:var(--mu);border-radius:50%}
+.hds{font-size:13px;line-height:1.75;color:rgba(240,240,248,.67);margin-bottom:26px;max-width:420px}
+.hbs{display:flex;gap:10px}
+.bw{display:flex;align-items:center;gap:9px;background:var(--red);color:#fff;border:none;border-radius:8px;padding:12px 26px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.bw:hover{background:var(--rd);transform:scale(1.03)}
+.bl2{background:rgba(255,255,255,.09);color:#fff;border:1px solid rgba(255,255,255,.13);border-radius:8px;padding:12px 20px;font-family:inherit;font-size:14px;cursor:pointer;transition:background .2s}
+.bl2:hover{background:rgba(255,255,255,.17)}
+.ads{background:var(--sf);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:12px 42px;display:flex;justify-content:center;align-items:center;min-height:68px}
+.adsi{width:100%;max-width:728px;display:flex;justify-content:center}
+.cstrip{display:flex;gap:8px;padding:18px 42px;overflow-x:auto;scrollbar-width:none}
+.cstrip::-webkit-scrollbar{display:none}
+.cc{flex-shrink:0;background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px 16px;text-align:center;cursor:pointer;transition:all .2s;min-width:80px}
+.cc:hover{border-color:var(--red);background:rgba(229,57,53,.08);transform:translateY(-2px)}
+.cc .fl{font-size:22px;display:block;margin-bottom:4px}
+.cc .nm{font-size:10px;color:var(--mu);font-weight:500}
+.section{padding:32px 42px 4px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.st2{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:2px}
+.st2 .acc{color:var(--red)}
+.sa{font-size:11px;color:var(--red);opacity:.8;transition:opacity .2s;cursor:pointer}
+.sa:hover{opacity:1}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin-bottom:32px}
+.card{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;background:var(--s2);transition:transform .25s,box-shadow .25s;aspect-ratio:2/3}
+.card:hover{transform:scale(1.06) translateY(-6px);box-shadow:0 22px 44px rgba(0,0,0,.75);z-index:5}
+.card img{width:100%;height:100%;object-fit:cover;display:block;background:var(--s3)}
+.cov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.2) 50%,transparent);opacity:0;transition:opacity .25s;display:flex;flex-direction:column;justify-content:flex-end;padding:10px}
+.card:hover .cov{opacity:1}
+.cn{font-size:11px;font-weight:600;line-height:1.3;margin-bottom:4px}
+.ci{font-size:10px;color:var(--mu);display:flex;gap:5px;align-items:center}
+.cst{color:var(--gold);font-size:9px}
+.pb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s}
+.card:hover .pb{opacity:1}
+.pc{width:40px;height:40px;border-radius:50%;background:rgba(229,57,53,.9);display:flex;align-items:center;justify-content:center}
+.spin-wrap{display:flex;align-items:center;justify-content:center;padding:50px;color:var(--mu);font-size:13px;gap:10px}
+.spin{width:18px;height:18px;border:2px solid var(--bd);border-top-color:var(--red);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err{padding:40px;text-align:center;color:var(--mu);font-size:14px;line-height:1.8}
+.err a{color:var(--red);cursor:pointer}
+.modal-bg{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.mbox{background:var(--sf);border-radius:16px;border:1px solid rgba(255,255,255,.09);width:100%;max-width:1020px;max-height:95vh;overflow-y:auto;position:relative}
+.mpl{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px 16px 0 0;overflow:hidden;min-height:320px}
+.mpl iframe{width:100%;height:100%;border:none}
+.min{padding:20px 26px}
+.mtt{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;margin-bottom:7px}
+.mtgs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.mtg{font-size:10px;padding:3px 9px;border-radius:20px;background:var(--s2);border:1px solid var(--bd);color:var(--mu)}
+.mds{font-size:13px;line-height:1.75;color:rgba(240,240,248,.67);margin-bottom:15px}
+.mad{display:flex;justify-content:center;margin-bottom:16px;min-height:54px}
+.mcl{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:10}
+.mcl:hover{background:rgba(255,255,255,.22)}
+.epsel{margin-bottom:14px}
+.eplbl{font-size:11px;color:var(--mu);margin-bottom:8px;font-weight:500}
+.epg{display:flex;gap:6px;flex-wrap:wrap}
+.epb{background:var(--s2);border:1px solid var(--bd);color:var(--mu);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s}
+.epb:hover,.epb.active{background:var(--red);border-color:var(--red);color:#fff}
+.srcts{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap}
+.srct{background:var(--s2);border:1px solid var(--bd);color:var(--mu);border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s}
+.srct:hover,.srct.active{background:#1a4080;border-color:#2a60c0;color:#fff}
+footer{background:var(--sf);border-top:1px solid var(--bd);padding:32px 42px;margin-top:14px}
+.ft{display:flex;gap:44px;margin-bottom:24px;flex-wrap:wrap}
+.fc h4{font-size:12px;font-weight:600;margin-bottom:11px;color:var(--tx)}
+.fc a{display:block;font-size:12px;color:var(--mu);text-decoration:none;margin-bottom:7px;cursor:pointer}
+.fc a:hover{color:var(--tx)}
+.fb{border-top:1px solid var(--bd);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.flogo{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;color:var(--red)}
+.fn{font-size:11px;color:var(--mu)}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}.mbt{display:block}
+  .topbar,.hero,.section,.cstrip,.ads{padding-left:16px;padding-right:16px}
+  .cg{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  footer{padding:20px 16px}.ft{gap:20px}
+}
+</style>
+</head>
+<body>
+<aside class="sidebar" id="SB">
+  <div class="slogo">StreamFlix<small>Watch Everything Free</small></div>
+  <nav class="snav">
+    <div class="slbl">Main</div>
+    <a class="ni active" onclick="go('home')">&#127968; Home</a>
+    <a class="ni" onclick="go('trending')">&#128293; Trending</a>
+    <a class="ni" onclick="go('new')">&#10024; New Releases</a>
+    <a class="ni" onclick="go('movies')">&#127916; Movies</a>
+    <a class="ni" onclick="go('mylist')">&#10084; My List</a>
+    <div class="ndiv"></div>
+    <div class="slbl">Asian Drama</div>
+    <a class="ni" onclick="go('kdrama')">&#127472;&#127479; KDrama</a>
+    <a class="ni" onclick="go('cdrama')">&#127464;&#127475; CDrama</a>
+    <a class="ni" onclick="go('thai')">&#127481;&#127469; Thai Series</a>
+    <a class="ni" onclick="go('japanese')">&#127471;&#127477; J-Drama</a>
+    <a class="ni" onclick="go('taiwanese')">&#127481;&#127484; Taiwanese</a>
+    <a class="ni" onclick="go('filipino')">&#127477;&#127469; Filipino</a>
+    <a class="ni" onclick="go('vietnamese')">&#127483;&#127475; Vietnamese</a>
+    <a class="ni" onclick="go('myanmar')">&#127474;&#127474; Myanmar</a>
+    <div class="ndiv"></div>
+    <div class="slbl">Special</div>
+    <a class="ni" onclick="go('gl')">&#127800; GL Girls Love</a>
+    <a class="ni" onclick="go('bl')">&#128156; BL Boys Love</a>
+    <a class="ni" onclick="go('anime')">&#9961; Anime</a>
+    <a class="ni" onclick="go('romance')">&#128149; Romance</a>
+    <a class="ni" onclick="go('fantasy')">&#128009; Fantasy/Wuxia</a>
+    <a class="ni" onclick="go('action')">&#9876; Action</a>
+    <a class="ni" onclick="go('horror')">&#128123; Horror</a>
+    <a class="ni" onclick="go('comedy')">&#128514; Comedy</a>
+    <div class="ndiv"></div>
+    <div class="slbl">Western</div>
+    <a class="ni" onclick="go('western')">&#127758; US / UK Series</a>
+  </nav>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <button class="mbt" onclick="toggleSB()">&#9776;</button>
+    <div class="sw">
+      <span class="sic">&#128269;</span>
+      <input type="text" id="SRCH" placeholder="Search any movie, drama, anime..." oninput="doSearch(this.value)">
+    </div>
+    <button class="tbb" onclick="go('mylist')">&#10084; My List</button>
+    <button class="tbb pr" onclick="go('trending')">&#128293; Trending</button>
+  </div>
+  <div class="hero">
+    <div class="hbg" id="HBG"></div>
+    <div class="hov"></div>
+    <div class="hcon" id="HC">
+      <div class="htgs"><span class="htg hot">&#128293; Loading...</span></div>
+      <h1 class="htt">StreamFlix</h1>
+      <p class="hds">Loading the best content for you...</p>
+      <div class="hbs"><button class="bw">&#9654; Watch Now</button></div>
+    </div>
+  </div>
+  <div class="ads"><div class="adsi">
+    <script async="async" data-cfasync="false" src="https://pl29179443.profitablecpmratenetwork.com/7594566784b53271e2ecb74d669b0f41/invoke.js"></script>
+    <div id="container-7594566784b53271e2ecb74d669b0f41"></div>
+  </div></div>
+  <div class="cstrip">
+    <div class="cc" onclick="go('kdrama')"><span class="fl">&#127472;&#127479;</span><span class="nm">KDrama</span></div>
+    <div class="cc" onclick="go('cdrama')"><span class="fl">&#127464;&#127475;</span><span class="nm">CDrama</span></div>
+    <div class="cc" onclick="go('thai')"><span class="fl">&#127481;&#127469;</span><span class="nm">Thai</span></div>
+    <div class="cc" onclick="go('japanese')"><span class="fl">&#127471;&#127477;</span><span class="nm">J-Drama</span></div>
+    <div class="cc" onclick="go('taiwanese')"><span class="fl">&#127481;&#127484;</span><span class="nm">Taiwan</span></div>
+    <div class="cc" onclick="go('filipino')"><span class="fl">&#127477;&#127469;</span><span class="nm">Filipino</span></div>
+    <div class="cc" onclick="go('vietnamese')"><span class="fl">&#127483;&#127475;</span><span class="nm">Vietnam</span></div>
+    <div class="cc" onclick="go('myanmar')"><span class="fl">&#127474;&#127474;</span><span class="nm">Myanmar</span></div>
+    <div class="cc" onclick="go('gl')"><span class="fl">&#127800;</span><span class="nm">GL</span></div>
+    <div class="cc" onclick="go('bl')"><span class="fl">&#128156;</span><span class="nm">BL</span></div>
+    <div class="cc" onclick="go('anime')"><span class="fl">&#9961;</span><span class="nm">Anime</span></div>
+    <div class="cc" onclick="go('fantasy')"><span class="fl">&#128009;</span><span class="nm">Wuxia</span></div>
+    <div class="cc" onclick="go('western')"><span class="fl">&#127758;</span><span class="nm">Western</span></div>
+    <div class="cc" onclick="go('movies')"><span class="fl">&#127916;</span><span class="nm">Movies</span></div>
+  </div>
+  <div id="AREA"></div>
+  <div class="ads"><div class="adsi">
+    <script src="https://pl29179444.profitablecpmratenetwork.com/79/1a/6e/791a6e22f7cbc2ab5aa63e56cd0e4bd7.js"></script>
+  </div></div>
+  <footer>
+    <div class="ft">
+      <div class="fc"><h4>Asian Drama</h4>
+        <a onclick="go('kdrama')">&#127472;&#127479; KDrama</a>
+        <a onclick="go('cdrama')">&#127464;&#127475; CDrama</a>
+        <a onclick="go('thai')">&#127481;&#127469; Thai</a>
+        <a onclick="go('japanese')">&#127471;&#127477; J-Drama</a>
+        <a onclick="go('taiwanese')">&#127481;&#127484; Taiwanese</a>
+        <a onclick="go('filipino')">&#127477;&#127469; Filipino</a>
+        <a onclick="go('vietnamese')">&#127483;&#127475; Vietnamese</a>
+        <a onclick="go('myanmar')">&#127474;&#127474; Myanmar</a>
+      </div>
+      <div class="fc"><h4>Special</h4>
+        <a onclick="go('gl')">&#127800; GL Girls Love</a>
+        <a onclick="go('bl')">&#128156; BL Boys Love</a>
+        <a onclick="go('anime')">&#9961; Anime</a>
+        <a onclick="go('romance')">&#128149; Romance</a>
+        <a onclick="go('fantasy')">&#128009; Fantasy</a>
+        <a onclick="go('horror')">&#128123; Horror</a>
+        <a onclick="go('comedy')">&#128514; Comedy</a>
+      </div>
+      <div class="fc"><h4>More</h4>
+        <a onclick="go('western')">&#127758; US/UK Series</a>
+        <a onclick="go('movies')">&#127916; Movies</a>
+        <a onclick="go('action')">&#9876; Action</a>
+        <a onclick="go('trending')">&#128293; Trending</a>
+        <a onclick="go('mylist')">&#10084; My List</a>
+      </div>
+      <div class="fc"><h4>Info</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">DMCA</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="fb">
+      <div class="flogo">StreamFlix</div>
+      <div class="fn">2025 StreamFlix - We do not host any video content.</div>
+      <a href="https://www.profitablecpmratenetwork.com/vw44czqg?key=0978ddd376894ad4854da419394d4ea7" target="_blank" style="font-size:11px;color:var(--mu);text-decoration:none;background:var(--s2);padding:5px 11px;border-radius:6px;border:1px solid var(--bd)">Sponsored</a>
+    </div>
+  </footer>
+</div>
+<div class="modal-bg" id="MOD" onclick="cib(event)">
+  <div class="mbox">
+    <button class="mcl" onclick="closeM()">&#10005;</button>
+    <div class="mpl"><iframe id="MIF" src="" allowfullscreen allow="autoplay;fullscreen;picture-in-picture;encrypted-media;gyroscope" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    <div class="min">
+      <div class="mad">
+        <script async="async" data-cfasync="false" src="https://pl29179443.profitablecpmratenetwork.com/7594566784b53271e2ecb74d669b0f41/invoke.js"></script>
+        <div id="container-7594566784b53271e2ecb74d669b0f41-m"></div>
+      </div>
+      <div class="mtt" id="MT"></div>
+      <div class="mtgs" id="MTG"></div>
+      <div id="MEP"></div>
+      <div class="srcts" id="MSRC"></div>
+      <div class="mds" id="MD"></div>
+    </div>
+  </div>
+</div>
+<script>
+const AK='9a0abe5dd28cb374c71198519adce5e7';
+const TK='eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTBhYmU1ZGQyOGNiMzc0YzcxMTk4NTE5YWRjZTVlNyIsIm5iZiI6MTc3NjU3NjQ0Ny44MzMsInN1YiI6IjY5ZTQ2N2JmMGQyNTY5MTBhYTk0MGFkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YuR4HmB2xqG9kG5OEEgSb9_zzkcMRCmTi45bbqnUsIU';
+const IMG='https://image.tmdb.org/t/p/w500';
+const IMGB='https://image.tmdb.org/t/p/original';
+const PROXIES=[
+  url=>url,
+  url=>'https://corsproxy.io/?'+encodeURIComponent(url),
+  url=>'https://api.allorigins.win/get?url='+encodeURIComponent(url),
+];
+
+const CFG={
+  trending:{l:'Trending Now',u:'trending/all/week'},
+  new:{l:'New Releases',u:'tv/on_the_air'},
+  movies:{l:'Popular Movies',u:'movie/popular'},
+  kdrama:{l:'KDrama',u:'discover/tv',p:{with_origin_country:'KR',sort_by:'popularity.desc'}},
+  cdrama:{l:'CDrama',u:'discover/tv',p:{with_origin_country:'CN',sort_by:'popularity.desc'}},
+  thai:{l:'Thai Series',u:'discover/tv',p:{with_origin_country:'TH',sort_by:'popularity.desc'}},
+  japanese:{l:'J-Drama',u:'discover/tv',p:{with_origin_country:'JP',without_genres:'16',sort_by:'popularity.desc'}},
+  taiwanese:{l:'Taiwanese',u:'discover/tv',p:{with_origin_country:'TW',sort_by:'popularity.desc'}},
+  filipino:{l:'Filipino Series',u:'discover/tv',p:{with_origin_country:'PH',sort_by:'popularity.desc'}},
+  vietnamese:{l:'Vietnamese',u:'discover/tv',p:{with_origin_country:'VN',sort_by:'popularity.desc'}},
+  myanmar:{l:'Myanmar Series',u:'discover/tv',p:{with_origin_country:'MM',sort_by:'popularity.desc'}},
+  gl:{l:'GL - Girls Love',u:'discover/tv',p:{with_keywords:'210024|158718|9673',sort_by:'popularity.desc'}},
+  bl:{l:'BL - Boys Love',u:'discover/tv',p:{with_keywords:'210024|158717|195197',sort_by:'popularity.desc'}},
+  anime:{l:'Anime',u:'discover/tv',p:{with_genres:'16',with_origin_country:'JP',sort_by:'popularity.desc'}},
+  romance:{l:'Romance',u:'discover/tv',p:{with_genres:'10749',sort_by:'popularity.desc'}},
+  fantasy:{l:'Fantasy / Wuxia',u:'discover/tv',p:{with_genres:'10765',with_origin_country:'CN|KR|TW|JP',sort_by:'popularity.desc'}},
+  action:{l:'Action',u:'discover/tv',p:{with_genres:'10759',sort_by:'popularity.desc'}},
+  horror:{l:'Horror',u:'discover/tv',p:{with_genres:'9648|27',sort_by:'popularity.desc'}},
+  comedy:{l:'Comedy',u:'discover/tv',p:{with_genres:'35',sort_by:'popularity.desc'}},
+  western:{l:'US / UK Series',u:'discover/tv',p:{with_origin_country:'US|GB',sort_by:'popularity.desc'}},
+};
+
+let ML=[],CI=null,CE=1,CS=1,CSR=0;
+const cache={};
+try{ML=JSON.parse(localStorage.getItem('sf_ml')||'[]');}catch(e){}
+
+async function tmdbFetch(endpoint,params={}){
+  const k=endpoint+JSON.stringify(params);
+  if(cache[k])return cache[k];
+  const u=new URL('https://api.themoviedb.org/3/'+endpoint);
+  Object.entries(params).forEach(([a,b])=>u.searchParams.set(a,b));
+  u.searchParams.set('api_key',AK);
+  u.searchParams.set('language','en-US');
+  u.searchParams.set('page','1');
+  const rawUrl=u.toString();
+  for(let i=0;i<PROXIES.length;i++){
+    try{
+      const proxyUrl=PROXIES[i](rawUrl);
+      const r=await fetch(proxyUrl,{mode:'cors'});
+      if(!r.ok)continue;
+      let d=await r.json();
+      if(d.contents)d=JSON.parse(d.contents);
+      if(d.results||d.imdb_id!==undefined||d.seasons){cache[k]=d;return d;}
+    }catch(e){continue;}
+  }
+  return{results:[]};
+}
+
+async function getImdb(id,type){
+  const k='imdb_'+type+'_'+id;
+  if(cache[k]!==undefined)return cache[k];
+  const d=await tmdbFetch(type+'/'+id+'/external_ids');
+  const imdb=d.imdb_id||null;
+  cache[k]=imdb;return imdb;
+}
+
+async function getDet(id,type){
+  const k='det_'+type+'_'+id;
+  if(cache[k])return cache[k];
+  const d=await tmdbFetch(type+'/'+id,{append_to_response:'external_ids'});
+  cache[k]=d;return d;
+}
+
+function mkCard(item){
+  const tp=item.media_type||(item.first_air_date?'tv':'movie');
+  const tt=item.name||item.title||'Unknown';
+  const yr=(item.first_air_date||item.release_date||'').slice(0,4);
+  const rt=item.vote_average?item.vote_average.toFixed(1):'?';
+  const ps=item.poster_path?IMG+item.poster_path:'https://placehold.co/300x450/18182a/7878a0?text=No+Image';
+  const d=document.createElement('div');
+  d.className='card';
+  d.innerHTML='<img src="'+ps+'" alt="'+tt.replace(/"/g,'')+'" loading="lazy">'+
+    '<div class="pb"><div class="pc"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>'+
+    '<div class="cov"><div class="cn">'+tt+'</div>'+
+    '<div class="ci"><span class="cst">&#9733;</span><span>'+rt+'</span><span>&#183;</span><span>'+(yr||'?')+'</span><span>&#183;</span><span>'+(tp==='tv'?'Series':'Movie')+'</span></div></div>';
+  d.onclick=()=>openM(Object.assign({},item,{_tp:tp,_tt:tt,_yr:yr,_rt:rt,_ps:ps}));
+  return d;
+}
+
+function spin(msg){return '<div class="spin-wrap"><div class="spin"></div>'+msg+'</div>';}
+
+async function fetchSec(key){
+  const c=CFG[key];if(!c||!c.u)return[];
+  const d=await tmdbFetch(c.u,c.p||{});
+  return d.results||[];
+}
+
+function mkSecEl(key,label,items){
+  if(!items||!items.length)return null;
+  const s=document.createElement('div');s.className='section';
+  s.innerHTML=`<div class="sh"><div class="st2"><span class="acc">${label}</span></div><span class="sa" onclick="go('${key}')">See all &#8594;</span></div>`;
+  const g=document.createElement('div');g.className='cg';
+  items.slice(0,8).forEach(i=>g.appendChild(mkCard(i)));
+  s.appendChild(g);return s;
+}
+
+async function loadHero(items){
+  if(!items||!items.length)return;
+  const item=items[Math.floor(Math.random()*Math.min(5,items.length))];
+  const tp=item.media_type||(item.first_air_date?'tv':'movie');
+  const tt=item.name||item.title||'';
+  const yr=(item.first_air_date||item.release_date||'').slice(0,4);
+  const rt=item.vote_average?item.vote_average.toFixed(1):'?';
+  if(item.backdrop_path)document.getElementById('HBG').style.backgroundImage="url('"+IMGB+item.backdrop_path+"')";
+  const ov=(item.overview||'').slice(0,170);
+  const hi=Object.assign({},item,{_tp:tp,_tt:tt,_yr:yr,_rt:rt});
+  window._HI=hi;
+  document.getElementById('HC').innerHTML=
+    '<div class="htgs"><span class="htg hot">&#128293; Trending</span>'+
+    '<span class="htg gn">'+(tp==='tv'?'Series':'Movie')+'</span>'+
+    (yr?'<span class="htg gn">'+yr+'</span>':'')+
+    '</div><h1 class="htt">'+tt+'</h1>'+
+    '<div class="hmt"><span class="st">&#9733; '+rt+'</span><span class="dt"></span><span>'+(yr||'')+'</span></div>'+
+    '<p class="hds">'+(ov||(tp==='tv'?'Popular series':'Popular movie'))+(item.overview&&item.overview.length>170?'...':'')+'</p>'+
+    '<div class="hbs"><button class="bw" onclick="openM(window._HI)">&#9654; Watch Now</button>'+
+    '<button class="bl2" onclick="addList(window._HI)">+ My List</button></div>';
+}
+
+async function renderHome(){
+  const area=document.getElementById('AREA');area.innerHTML='';
+  const order=['trending','kdrama','cdrama','thai','gl','bl','anime','romance','japanese','taiwanese','fantasy','western','movies','filipino','vietnamese','horror','action','comedy'];
+  const phs={};
+  order.forEach((key,idx)=>{
+    const c=CFG[key];if(!c)return;
+    const ph=document.createElement('div');ph.className='section';
+    ph.innerHTML='<div class="sh"><div class="st2"><span class="acc">'+c.l+'</span></div></div>'+spin('Loading '+c.l+'...');
+    area.appendChild(ph);phs[key]=ph;
+    if(key==='cdrama'){
+      const ad=document.createElement('div');ad.className='ads';
+      ad.innerHTML='<div class="adsi"><script src="https://pl29179444.profitablecpmratenetwork.com/79/1a/6e/791a6e22f7cbc2ab5aa63e56cd0e4bd7.js"><\/script></div>';
+      area.appendChild(ad);
+    }
+  });
+  order.forEach(async key=>{
+    const c=CFG[key];if(!c)return;
+    const items=await fetchSec(key);
+    const sec=mkSecEl(key,c.l,items);
+    const ph=phs[key];
+    if(!ph||!ph.parentNode)return;
+    if(sec)ph.parentNode.replaceChild(sec,ph);
+    else ph.innerHTML=`<div class="sh"><div class="st2"><span class="acc">${c.l}</span></div></div><div class="err">Could not load. <a onclick="renderHome()">Try again</a></div>`;
+    if(key==='trending'&&items.length)loadHero(items);
+  });
+}
+
+async function go(key){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>{if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+key+"'"))n.classList.add('active');});
+  if(window.innerWidth<900)document.getElementById('SB').classList.remove('open');
+  const area=document.getElementById('AREA');
+  if(key==='home'){renderHome();return;}
+  if(key==='mylist'){
+    area.innerHTML='';
+    if(!ML.length){area.innerHTML='<div class="err">Your list is empty.<br>Browse and click &#10084; to save shows.</div>';return;}
+    const s=document.createElement('div');s.className='section';
+    s.innerHTML='<div class="sh"><div class="st2"><span class="acc">My List</span></div><span style="font-size:12px;color:var(--mu)">'+ML.length+' saved</span></div>';
+    const g=document.createElement('div');g.className='cg';
+    ML.forEach(i=>g.appendChild(mkCard(i)));s.appendChild(g);area.appendChild(s);return;
+  }
+  const c=CFG[key];if(!c)return;
+  area.innerHTML='<div class="section"><div class="sh"><div class="st2"><span class="acc">'+c.l+'</span></div></div>'+spin('Loading...')+'</div>';
+  const items=await fetchSec(key);
+  area.innerHTML='';
+  if(!items.length){
+    area.innerHTML=`<div class="err">Could not load content.<br><a onclick="go('${key}')">Try again</a> or check your internet connection.</div>`;return;
+  }
+  const hdr=document.createElement('div');
+  hdr.style.cssText='padding:32px 42px 14px;font-family:Bebas Neue,sans-serif;font-size:28px;letter-spacing:2px;display:flex;align-items:center;gap:10px';
+  hdr.innerHTML='<span style="color:var(--red)">'+c.l+'</span><span style="color:var(--mu);font-size:13px;font-family:DM Sans,sans-serif;font-weight:400">'+items.length+' titles</span>';
+  area.appendChild(hdr);
+  const g=document.createElement('div');g.className='cg';g.style.cssText='padding:0 42px 42px';
+  items.forEach(i=>g.appendChild(mkCard(i)));area.appendChild(g);
+}
+
+async function openM(item){
+  CI=item;CE=1;CS=1;CSR=0;
+  const tp=item._tp||item.media_type||(item.first_air_date?'tv':'movie');
+  const tt=item._tt||item.name||item.title||'';
+  const yr=item._yr||(item.first_air_date||item.release_date||'').slice(0,4);
+  const rt=item._rt||(item.vote_average?item.vote_average.toFixed(1):'?');
+  document.getElementById('MT').textContent=tt;
+  document.getElementById('MD').textContent=item.overview||'No description available.';
+  document.getElementById('MTG').innerHTML=
+    '<span class="mtg">&#9733; '+rt+'</span>'+
+    '<span class="mtg">'+(yr||'—')+'</span>'+
+    '<span class="mtg">'+(tp==='tv'?'&#128250; Series':'&#127916; Movie')+'</span>';
+  document.getElementById('MSRC').innerHTML=
+    '<div style="width:100%;margin-bottom:8px;font-size:11px;color:var(--mu)">'+
+    '&#127909; <strong style="color:var(--tx)">Video Server</strong> '+
+    '&nbsp;&#10003; <span style="color:#4ade80">Subtitles available — look for CC button inside player</span>'+
+    '</div>'+
+    '<button class="srct active" onclick="swSrc(0,this)">&#9654; Server 1</button>'+
+    '<button class="srct" onclick="swSrc(1,this)">Server 2</button>'+
+    '<button class="srct" onclick="swSrc(2,this)">Server 3</button>'+
+    '<button class="srct" onclick="swSrc(3,this)">Server 4</button>'+
+    '<button class="srct" onclick="swSrc(4,this)">Server 5</button>'+
+    '<button class="srct" onclick="swSrc(5,this)">Server 6</button>'+
+    '<button class="srct" onclick="swSrc(6,this)">Server 7</button>'+
+    '<button class="srct" onclick="swSrc(7,this)">Server 8</button>'+
+    '<div style="width:100%;margin-top:10px;padding:10px;background:rgba(229,57,53,.1);border:1px solid rgba(229,57,53,.3);border-radius:8px;font-size:12px;color:#fca5a5">'+
+    '&#9888; If a server shows error, just click the next server button. Not all servers have every title.</div>';
+  const ep=document.getElementById('MEP');
+  if(tp==='tv'){
+    ep.innerHTML=spin('Loading episodes...');
+    const det=await getDet(item.id,'tv');
+    const seas=det&&det.seasons?det.seasons.filter(s=>s.season_number>0):[];
+    const totEp=seas.length>0?seas[0].episode_count:12;
+    let h='';
+    if(seas.length>1){
+      h+='<div class="epsel"><div class="eplbl">Season</div><div class="epg">';
+      seas.slice(0,10).forEach(s=>{h+='<button class="epb '+(s.season_number===1?'active':'')+'" onclick="selS('+s.season_number+',this)">S'+s.season_number+'</button>';});
+      h+='</div></div>';
+    }
+    h+='<div class="epsel"><div class="eplbl">Episode</div><div class="epg" id="EPB">';
+    const cnt=Math.min(totEp,24);
+    for(let e=1;e<=cnt;e++)h+='<button class="epb '+(e===1?'active':'')+'" onclick="selE('+e+',this)">EP '+e+'</button>';
+    if(totEp>24)h+='<button class="epb" style="opacity:.5">+' +(totEp-24)+' more</button>';
+    h+='</div></div>';
+    ep.innerHTML=h;
+  }else{ep.innerHTML='';}
+  await loadP(item,tp,1,1,0);
+  document.getElementById('MOD').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+async function loadP(item,tp,s,e,si){
+  const tid=String(item.id);
+  const imdb=await getImdb(tid,tp==='tv'?'tv':'movie');
+  const id=imdb||tid;
+  const isI=!!imdb;
+  // Updated working servers 2025
+  const tv=[
+    isI?'https://vidbinge.dev/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidbinge.dev/embed/tv/'+tid+'/'+s+'/'+e,
+    isI?'https://vidsrc.cc/v2/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.cc/v2/embed/tv/'+tid+'/'+s+'/'+e,
+    isI?'https://vidsrc.me/embed/tv?imdb='+imdb+'&season='+s+'&episode='+e:'https://vidsrc.me/embed/tv?tmdb='+tid+'&season='+s+'&episode='+e,
+    isI?'https://vidsrc.to/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.to/embed/tv/'+tid+'/'+s+'/'+e,
+    isI?'https://embed.su/embed/tv/'+imdb+'/'+s+'/'+e:'https://embed.su/embed/tv/'+tid+'/'+s+'/'+e,
+    'https://moviesapi.club/tv/'+tid+'-'+s+'-'+e,
+    'https://111movies.com/tv/'+tid+'/'+s+'/'+e,
+    'https://vidlink.pro/tv/'+tid+'/'+s+'/'+e+'?autoplay=true&title=true&poster=true&nextbutton=true',
+  ];
+  const mv=[
+    isI?'https://vidbinge.dev/embed/movie/'+imdb:'https://vidbinge.dev/embed/movie/'+tid,
+    isI?'https://vidsrc.cc/v2/embed/movie/'+imdb:'https://vidsrc.cc/v2/embed/movie/'+tid,
+    isI?'https://vidsrc.me/embed/movie?imdb='+imdb:'https://vidsrc.me/embed/movie?tmdb='+tid,
+    isI?'https://vidsrc.to/embed/movie/'+imdb:'https://vidsrc.to/embed/movie/'+tid,
+    isI?'https://embed.su/embed/movie/'+imdb:'https://embed.su/embed/movie/'+tid,
+    'https://moviesapi.club/movie/'+tid,
+    'https://111movies.com/movie/'+tid,
+    'https://vidlink.pro/movie/'+tid+'?autoplay=true&title=true&poster=true',
+  ];
+  const list=tp==='tv'?tv:mv;
+  const url=list[si%list.length];
+  console.log('[StreamFlix] Loading server '+(si+1)+': '+url);
+  document.getElementById('MIF').src='';
+  setTimeout(()=>document.getElementById('MIF').src=url,100);
+}
+
+function swSrc(i,btn){CSR=i;document.querySelectorAll('.srct').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tp=CI._tp||(CI.first_air_date?'tv':'movie');loadP(CI,tp,CS,CE,i);}
+function selE(e,btn){CE=e;document.querySelectorAll('#EPB .epb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');loadP(CI,'tv',CS,e,CSR);}
+function selS(s,btn){CS=s;CE=1;document.querySelectorAll('.epb').forEach(b=>{if(b.textContent.startsWith('S'))b.classList.remove('active');});btn.classList.add('active');loadP(CI,'tv',s,1,CSR);}
+function closeM(){document.getElementById('MOD').classList.remove('open');document.getElementById('MIF').src='';document.body.style.overflow='';}
+function cib(e){if(e.target.id==='MOD')closeM();}
+function addList(item){
+  if(!ML.some(x=>x.id===item.id)){ML.push(item);try{localStorage.setItem('sf_ml',JSON.stringify(ML));}catch(e){}alert('Added to My List!');}
+  else alert('Already in your list!');
+}
+
+let ST;
+async function doSearch(v){
+  clearTimeout(ST);
+  if(!v.trim()){renderHome();return;}
+  ST=setTimeout(async()=>{
+    const area=document.getElementById('AREA');
+    area.innerHTML=spin('Searching for "'+v+'"...');
+    const d=await tmdbFetch('search/multi',{query:v});
+    const res=(d.results||[]).filter(r=>r.media_type!=='person');
+    area.innerHTML='';
+    if(!res.length){area.innerHTML='<div class="err">Nothing found for "'+v+'".<br>Try a different name.</div>';return;}
+    const hdr=document.createElement('div');
+    hdr.style.cssText='padding:28px 42px 10px;font-size:13px;color:var(--mu)';
+    hdr.innerHTML=res.length+' results for <strong style="color:var(--tx)">'+v+'</strong>';
+    area.appendChild(hdr);
+    const g=document.createElement('div');g.className='cg';g.style.cssText='padding:0 42px 42px';
+    res.forEach(i=>g.appendChild(mkCard(i)));area.appendChild(g);
+  },600);
+}
+
+function toggleSB(){document.getElementById('SB').classList.toggle('open');}
+renderHome();
+</script>
+</body>
+</html>
