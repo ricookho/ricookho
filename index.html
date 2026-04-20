@@ -83,7 +83,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-h
 .modal-bg{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
 .mbox{background:var(--sf);border-radius:16px;border:1px solid rgba(255,255,255,.09);width:100%;max-width:1020px;max-height:95vh;overflow-y:auto;position:relative}
-.mpl{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px 16px 0 0;overflow:hidden;min-height:320px}
+.mpl{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px 16px 0 0;overflow:hidden;min-height:360px;position:relative}
 .mpl iframe{width:100%;height:100%;border:none}
 .min{padding:20px 26px}
 .mtt{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;margin-bottom:7px}
@@ -242,13 +242,7 @@ footer{background:var(--sf);border-top:1px solid var(--bd);padding:32px 42px;mar
 <div class="modal-bg" id="MOD" onclick="cib(event)">
   <div class="mbox">
     <button class="mcl" onclick="closeM()">&#10005;</button>
-    <div class="mpl" id="MPL" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#060612;border-radius:16px 16px 0 0;padding:40px 20px;min-height:320px">
-  <div style="font-size:56px">&#127909;</div>
-  <div id="PTITLE" style="font-size:18px;font-weight:600;color:#f0f0f8;text-align:center">Select a server below</div>
-  <div id="PSUB" style="font-size:13px;color:#7878a0;text-align:center;max-width:400px;line-height:1.6"></div>
-  <button id="PBTN" onclick="openWatch()" style="display:none;background:#E53935;border:none;border-radius:12px;color:#fff;font-size:17px;font-weight:700;padding:16px 44px;cursor:pointer;font-family:inherit;letter-spacing:0.5px">&#9654;&nbsp; Watch Now</button>
-  <div id="PINFO" style="font-size:11px;color:#444466;text-align:center">Opens in a new tab &bull; No sandbox errors &bull; Full subtitles inside player</div>
-</div>
+    <div class="mpl" id="MPL"><div id="PLOADING" style="display:flex;align-items:center;justify-content:center;height:100%;color:#7878a0;font-size:13px;gap:10px"><div class="spin"></div>Loading player...</div><iframe id="MIF" src="" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation"></iframe></div>
     <div class="min">
       <div class="mad">
         <script async="async" data-cfasync="false" src="https://pl29179443.profitablecpmratenetwork.com/7594566784b53271e2ecb74d669b0f41/invoke.js"></script>
@@ -461,20 +455,14 @@ async function openM(item){
     '<span class="mtg">'+(yr||'—')+'</span>'+
     '<span class="mtg">'+(tp==='tv'?'&#128250; Series':'&#127916; Movie')+'</span>';
   document.getElementById('MSRC').innerHTML=
-    '<div style="width:100%;margin-bottom:8px;font-size:11px;color:var(--mu)">'+
-    '&#127909; <strong style="color:var(--tx)">Video Server</strong> '+
-    '&nbsp;&#10003; <span style="color:#4ade80">Subtitles available — look for CC button inside player</span>'+
-    '</div>'+
-    '<button class="srct active" onclick="swSrc(0,this)">&#9654; Server 1</button>'+
-    '<button class="srct" onclick="swSrc(1,this)">Server 2</button>'+
-    '<button class="srct" onclick="swSrc(2,this)">Server 3</button>'+
-    '<button class="srct" onclick="swSrc(3,this)">Server 4</button>'+
-    '<button class="srct" onclick="swSrc(4,this)">Server 5</button>'+
-    '<button class="srct" onclick="swSrc(5,this)">Server 6</button>'+
-    '<button class="srct" onclick="swSrc(6,this)">Server 7</button>'+
-    '<button class="srct" onclick="swSrc(7,this)">Server 8</button>'+
-    '<div style="width:100%;margin-top:10px;padding:10px;background:rgba(229,57,53,.1);border:1px solid rgba(229,57,53,.3);border-radius:8px;font-size:12px;color:#fca5a5">'+
-    '&#9888; If a server shows error, just click the next server button. Not all servers have every title.</div>';
+    '<button class="srct active" onclick="swSrc(0,this)">&#11088; VidLink</button>'+
+    '<button class="srct" onclick="swSrc(1,this)">VidSrc.cc</button>'+
+    '<button class="srct" onclick="swSrc(2,this)">VidBinge</button>'+
+    '<button class="srct" onclick="swSrc(3,this)">VidSrc.me</button>'+
+    '<button class="srct" onclick="swSrc(4,this)">VidSrc.to</button>'+
+    '<button class="srct" onclick="swSrc(5,this)">Embed.su</button>'+
+    '<button class="srct" onclick="swSrc(6,this)">MoviesAPI</button>'+
+    '<button class="srct" onclick="swSrc(7,this)">111Movies</button>';
   const ep=document.getElementById('MEP');
   if(tp==='tv'){
     ep.innerHTML=spin('Loading episodes...');
@@ -499,55 +487,43 @@ async function openM(item){
   document.body.style.overflow='hidden';
 }
 
-let CURL='';
-function openWatch(){if(CURL)window.open(CURL,'_blank');}
 async function loadP(item,tp,s,e,si){
-  const btn=document.getElementById('PBTN');
-  const ptitle=document.getElementById('PTITLE');
-  const psub=document.getElementById('PSUB');
-  ptitle.textContent='Loading...';
-  psub.textContent='';
-  btn.style.display='none';
+  const ifrm=document.getElementById('MIF');
+  const loader=document.getElementById('PLOADING');
+  ifrm.style.display='none';
+  if(loader)loader.style.display='flex';
   const tid=String(item.id);
   const imdb=await getImdb(tid,tp==='tv'?'tv':'movie');
   const isI=!!imdb;
-  const snames=[
-    'Server 1 — vidbinge (best subtitles: EN, KO, TH, ZH, AR, FR...)',
-    'Server 2 — vidsrc.cc (multiple subtitle languages)',
-    'Server 3 — vidsrc.me (English subtitles)',
-    'Server 4 — vidsrc.to (multi-language)',
-    'Server 5 — embed.su (backup)',
-    'Server 6 — moviesapi (backup)',
-    'Server 7 — 111movies (backup)',
-    'Server 8 — vidlink (backup)',
-  ];
+  // All servers — same style as 123chill
   const tv=[
-    isI?'https://vidbinge.dev/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidbinge.dev/embed/tv/'+tid+'/'+s+'/'+e,
+    'https://vidlink.pro/tv/'+tid+'/'+s+'/'+e+'?primaryColor=E53935&autoplay=true&nextbutton=true',
     isI?'https://vidsrc.cc/v2/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.cc/v2/embed/tv/'+tid+'/'+s+'/'+e,
+    isI?'https://vidbinge.dev/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidbinge.dev/embed/tv/'+tid+'/'+s+'/'+e,
     isI?'https://vidsrc.me/embed/tv?imdb='+imdb+'&season='+s+'&episode='+e:'https://vidsrc.me/embed/tv?tmdb='+tid+'&season='+s+'&episode='+e,
     isI?'https://vidsrc.to/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.to/embed/tv/'+tid+'/'+s+'/'+e,
     isI?'https://embed.su/embed/tv/'+imdb+'/'+s+'/'+e:'https://embed.su/embed/tv/'+tid+'/'+s+'/'+e,
     'https://moviesapi.club/tv/'+tid+'-'+s+'-'+e,
     'https://111movies.com/tv/'+tid+'/'+s+'/'+e,
-    'https://vidlink.pro/tv/'+tid+'/'+s+'/'+e+'?autoplay=true&title=true&poster=true&nextbutton=true',
   ];
   const mv=[
-    isI?'https://vidbinge.dev/embed/movie/'+imdb:'https://vidbinge.dev/embed/movie/'+tid,
+    'https://vidlink.pro/movie/'+tid+'?primaryColor=E53935&autoplay=true',
     isI?'https://vidsrc.cc/v2/embed/movie/'+imdb:'https://vidsrc.cc/v2/embed/movie/'+tid,
+    isI?'https://vidbinge.dev/embed/movie/'+imdb:'https://vidbinge.dev/embed/movie/'+tid,
     isI?'https://vidsrc.me/embed/movie?imdb='+imdb:'https://vidsrc.me/embed/movie?tmdb='+tid,
     isI?'https://vidsrc.to/embed/movie/'+imdb:'https://vidsrc.to/embed/movie/'+tid,
     isI?'https://embed.su/embed/movie/'+imdb:'https://embed.su/embed/movie/'+tid,
     'https://moviesapi.club/movie/'+tid,
     'https://111movies.com/movie/'+tid,
-    'https://vidlink.pro/movie/'+tid+'?autoplay=true&title=true&poster=true',
   ];
   const list=tp==='tv'?tv:mv;
-  CURL=list[si%list.length];
-  const tt=item._tt||item.name||item.title||'';
-  const epLabel=tp==='tv'?' — S'+s+' EP'+e:'';
-  ptitle.textContent=tt+epLabel;
-  psub.innerHTML='<span style="color:#80c080">'+snames[si%snames.length]+'</span><br><br>Click Watch Now — the player opens in a new tab with subtitle options inside.';
-  btn.style.display='block';
+  const url=list[si%list.length];
+  ifrm.src='';
+  ifrm.onload=()=>{
+    ifrm.style.display='block';
+    if(loader)loader.style.display='none';
+  };
+  setTimeout(()=>{ifrm.src=url;},150);
 }
 
 function swSrc(i,btn){CSR=i;document.querySelectorAll('.srct').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tp=CI._tp||(CI.first_air_date?'tv':'movie');loadP(CI,tp,CS,CE,i);}
