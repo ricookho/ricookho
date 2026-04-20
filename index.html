@@ -242,7 +242,13 @@ footer{background:var(--sf);border-top:1px solid var(--bd);padding:32px 42px;mar
 <div class="modal-bg" id="MOD" onclick="cib(event)">
   <div class="mbox">
     <button class="mcl" onclick="closeM()">&#10005;</button>
-    <div class="mpl"><iframe id="MIF" src="" allowfullscreen allow="autoplay;fullscreen;picture-in-picture;encrypted-media;gyroscope" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    <div class="mpl" id="MPL" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#060612;border-radius:16px 16px 0 0;padding:40px 20px;min-height:320px">
+  <div style="font-size:56px">&#127909;</div>
+  <div id="PTITLE" style="font-size:18px;font-weight:600;color:#f0f0f8;text-align:center">Select a server below</div>
+  <div id="PSUB" style="font-size:13px;color:#7878a0;text-align:center;max-width:400px;line-height:1.6"></div>
+  <button id="PBTN" onclick="openWatch()" style="display:none;background:#E53935;border:none;border-radius:12px;color:#fff;font-size:17px;font-weight:700;padding:16px 44px;cursor:pointer;font-family:inherit;letter-spacing:0.5px">&#9654;&nbsp; Watch Now</button>
+  <div id="PINFO" style="font-size:11px;color:#444466;text-align:center">Opens in a new tab &bull; No sandbox errors &bull; Full subtitles inside player</div>
+</div>
     <div class="min">
       <div class="mad">
         <script async="async" data-cfasync="false" src="https://pl29179443.profitablecpmratenetwork.com/7594566784b53271e2ecb74d669b0f41/invoke.js"></script>
@@ -493,12 +499,28 @@ async function openM(item){
   document.body.style.overflow='hidden';
 }
 
+let CURL='';
+function openWatch(){if(CURL)window.open(CURL,'_blank');}
 async function loadP(item,tp,s,e,si){
+  const btn=document.getElementById('PBTN');
+  const ptitle=document.getElementById('PTITLE');
+  const psub=document.getElementById('PSUB');
+  ptitle.textContent='Loading...';
+  psub.textContent='';
+  btn.style.display='none';
   const tid=String(item.id);
   const imdb=await getImdb(tid,tp==='tv'?'tv':'movie');
-  const id=imdb||tid;
   const isI=!!imdb;
-  // Updated working servers 2025
+  const snames=[
+    'Server 1 — vidbinge (best subtitles: EN, KO, TH, ZH, AR, FR...)',
+    'Server 2 — vidsrc.cc (multiple subtitle languages)',
+    'Server 3 — vidsrc.me (English subtitles)',
+    'Server 4 — vidsrc.to (multi-language)',
+    'Server 5 — embed.su (backup)',
+    'Server 6 — moviesapi (backup)',
+    'Server 7 — 111movies (backup)',
+    'Server 8 — vidlink (backup)',
+  ];
   const tv=[
     isI?'https://vidbinge.dev/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidbinge.dev/embed/tv/'+tid+'/'+s+'/'+e,
     isI?'https://vidsrc.cc/v2/embed/tv/'+imdb+'/'+s+'/'+e:'https://vidsrc.cc/v2/embed/tv/'+tid+'/'+s+'/'+e,
@@ -520,10 +542,12 @@ async function loadP(item,tp,s,e,si){
     'https://vidlink.pro/movie/'+tid+'?autoplay=true&title=true&poster=true',
   ];
   const list=tp==='tv'?tv:mv;
-  const url=list[si%list.length];
-  console.log('[StreamFlix] Loading server '+(si+1)+': '+url);
-  document.getElementById('MIF').src='';
-  setTimeout(()=>document.getElementById('MIF').src=url,100);
+  CURL=list[si%list.length];
+  const tt=item._tt||item.name||item.title||'';
+  const epLabel=tp==='tv'?' — S'+s+' EP'+e:'';
+  ptitle.textContent=tt+epLabel;
+  psub.innerHTML='<span style="color:#80c080">'+snames[si%snames.length]+'</span><br><br>Click Watch Now — the player opens in a new tab with subtitle options inside.';
+  btn.style.display='block';
 }
 
 function swSrc(i,btn){CSR=i;document.querySelectorAll('.srct').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tp=CI._tp||(CI.first_air_date?'tv':'movie');loadP(CI,tp,CS,CE,i);}
