@@ -255,7 +255,7 @@ footer{background:var(--s1);border-top:1px solid var(--bd);padding:26px 18px;mar
       </div>
     </div>
     <div class="srv-sec">
-      <div class="srv-label">&#127909; Click a server to watch in new tab &nbsp;<span>&#10003; Try next if one fails</span></div>
+      <div class="srv-label">Video Server &nbsp;<span>&#10003; If one fails, try the next</span></div>
       <div class="srv-row" id="SRVROW"></div>
     </div>
     <div class="m-adbar">
@@ -303,37 +303,37 @@ var CATS = {
 };
 
 var SRVS = [
-  { n:'&#11088; VidLink',
-    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true&primaryColor=e53935'; },
+  { n:'VidLink',
+    m: function(id){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true&primaryColor=e53935'; },
     t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&primaryColor=e53935&nextbutton=true'; }
   },
-  { n:'&#11088; 2Embed',
-    m: function(id,ii){ return 'https://www.2embed.cc/embed/'+id; },
+  { n:'2Embed',
+    m: function(id){ return 'https://www.2embed.cc/embed/'+id; },
     t: function(id,ii,s,e){ return 'https://www.2embed.cc/embedtv/'+id+'&s='+s+'&e='+e; }
   },
   { n:'SmashyStream',
-    m: function(id,ii){ return 'https://embed.smashystream.com/playere.php?tmdb='+id+'&type=movie'; },
+    m: function(id){ return 'https://embed.smashystream.com/playere.php?tmdb='+id+'&type=movie'; },
     t: function(id,ii,s,e){ return 'https://embed.smashystream.com/playere.php?tmdb='+id+'&type=tv&season='+s+'&episode='+e; }
   },
-  { n:'VidSrc.cc',
-    m: function(id,ii){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
-  },
-  { n:'VidSrc.me',
-    m: function(id,ii){ return 'https://vidsrc.me/embed/movie?tmdb='+id; },
+  { n:'VidSrc',
+    m: function(id){ return 'https://vidsrc.me/embed/movie?tmdb='+id; },
     t: function(id,ii,s,e){ return 'https://vidsrc.me/embed/tv?tmdb='+id+'&season='+s+'&episode='+e; }
   },
   { n:'EmbedSu',
-    m: function(id,ii){ return 'https://embed.su/embed/movie/'+id; },
+    m: function(id){ return 'https://embed.su/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+id+'/'+s+'/'+e; }
   },
   { n:'NontonGo',
-    m: function(id,ii){ return 'https://www.nontongo.win/embed/movie/'+id; },
+    m: function(id){ return 'https://www.nontongo.win/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://www.nontongo.win/embed/tv/'+id+'/'+s+'/'+e; }
   },
   { n:'111Movies',
-    m: function(id,ii){ return 'https://111movies.com/movie/'+id; },
+    m: function(id){ return 'https://111movies.com/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://111movies.com/tv/'+id+'/'+s+'/'+e; }
+  },
+  { n:'VidSrc.cc',
+    m: function(id){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
   }
 ];
 
@@ -391,7 +391,7 @@ function mkCard(item) {
   var d = document.createElement('div');
   d.className = 'card';
   d.innerHTML =
-    '<img src="' + ps + '" alt="" loading="lazy" onerror="this.src='https://placehold.co/300x450/1a1a35/8080a8?text=No+Image'">' +
+    '<img src="' + ps + '" alt="" loading="lazy" onerror="this.src=\'https://placehold.co/300x450/1a1a35/8080a8?text=No+Image\'">' +
     '<div class="play-ring"><div class="play-ring-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>' +
     '<div class="card-over"><div class="card-name">' + tt + '</div>' +
     '<div class="card-sub"><span class="card-star">&#9733;</span><span>' + rt + '</span><span>&#183;</span><span>' + (yr||'?') + '</span></div></div>';
@@ -403,7 +403,7 @@ function mkSec(key, label, items) {
   if (!items || !items.length) return null;
   var sec = document.createElement('div'); sec.className = 'sec';
   var head = document.createElement('div'); head.className = 'sec-head';
-  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,'' + key + '')">See all &#8594;</span>';
+  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,\'' + key + '\')">See all &#8594;</span>';
   var grid = document.createElement('div'); grid.className = 'grid';
   items.slice(0, 10).forEach(function(item) { grid.appendChild(mkCard(item)); });
   sec.appendChild(head); sec.appendChild(grid);
@@ -575,15 +575,14 @@ async function playNow() {
   var tp = item.tp;
   var tid = String(item.id);
   var srv = SRVS[CR];
-  // Use TMDB ID directly - no IMDB lookup needed, faster and more reliable
+  // Open directly in new tab - bypasses all sandbox/iframe blocking
   var url = tp === 'tv' ? srv.t(tid, false, CS, CE) : srv.m(tid, false);
-  // Open directly in new tab - works 100% of the time, no sandbox, no blocking
   window.open(url, '_blank');
 }
 
 function closeModal() {
   document.getElementById('MOD').classList.remove('show');
-  /* closed */
+  document.getElementById('MIF').src = 'about:blank';
   document.body.style.overflow = '';
 }
 
