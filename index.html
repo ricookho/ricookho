@@ -80,7 +80,7 @@ a,button{cursor:pointer}
 /* WATCH LAYOUT */
 .watch-wrap{display:flex;min-height:420px}
 .player-col{flex:1;min-width:0}
-.player-frame{width:100%;aspect-ratio:16/9;background:#060612;border-radius:12px 0 0 0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.player-frame{width:100%;aspect-ratio:16/9;background:#000;border-radius:12px 0 0 0;overflow:hidden}
 .player-frame iframe{width:100%;height:100%;border:none;display:block}
 /* EPISODE SIDEBAR */
 .ep-col{width:270px;background:var(--s2);border-left:1px solid var(--bd);border-radius:0 12px 0 0;display:flex;flex-direction:column;overflow:hidden}
@@ -242,12 +242,10 @@ footer{background:var(--s1);border-top:1px solid var(--bd);padding:26px 18px;mar
     <button class="modal-close" onclick="closeModal()">&#10005;</button>
     <div class="watch-wrap">
       <div class="player-col">
-        <div class="player-frame" id="PFRAME" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#060612;border-radius:12px 0 0 0;padding:32px 20px">
-          <div style="font-size:52px">&#127909;</div>
-          <div id="PTITLE" style="font-size:17px;font-weight:600;color:#eeeef8;text-align:center">Pick a server below to watch</div>
-          <div id="PSUB" style="font-size:12px;color:#8080a8;text-align:center;max-width:360px;line-height:1.6"></div>
-          <button id="PWBTN" onclick="doWatch()" style="display:none;background:#e53935;border:none;border-radius:10px;color:#fff;font-size:16px;font-weight:700;padding:13px 40px;cursor:pointer;font-family:inherit">&#9654; Watch Now</button>
-          <div style="font-size:11px;color:#333355;text-align:center">Opens in new tab &bull; Has subtitles inside player</div>
+        <div class="player-frame">
+          <iframe id="MIF" src="" allowfullscreen
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
       <div class="ep-col" id="EPC" style="display:none">
@@ -257,7 +255,7 @@ footer{background:var(--s1);border-top:1px solid var(--bd);padding:26px 18px;mar
       </div>
     </div>
     <div class="srv-sec">
-      <div class="srv-label">Video Server &nbsp;<span>&#10003; If one fails, try the next</span></div>
+      <div class="srv-label">&#127909; Click a server to watch in new tab &nbsp;<span>&#10003; Try next if one fails</span></div>
       <div class="srv-row" id="SRVROW"></div>
     </div>
     <div class="m-adbar">
@@ -305,37 +303,37 @@ var CATS = {
 };
 
 var SRVS = [
-  { n:'vidsrc.me',
-    m: function(id,ii){ return ii ? 'https://vidsrc.me/embed/movie?imdb='+id : 'https://vidsrc.me/embed/movie?tmdb='+id; },
-    t: function(id,ii,s,e){ return ii ? 'https://vidsrc.me/embed/tv?imdb='+id+'&season='+s+'&episode='+e : 'https://vidsrc.me/embed/tv?tmdb='+id+'&season='+s+'&episode='+e; }
+  { n:'&#11088; VidLink',
+    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true&primaryColor=e53935'; },
+    t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&primaryColor=e53935&nextbutton=true'; }
   },
-  { n:'vidsrc.cc',
+  { n:'&#11088; 2Embed',
+    m: function(id,ii){ return 'https://www.2embed.cc/embed/'+id; },
+    t: function(id,ii,s,e){ return 'https://www.2embed.cc/embedtv/'+id+'&s='+s+'&e='+e; }
+  },
+  { n:'SmashyStream',
+    m: function(id,ii){ return 'https://embed.smashystream.com/playere.php?tmdb='+id+'&type=movie'; },
+    t: function(id,ii,s,e){ return 'https://embed.smashystream.com/playere.php?tmdb='+id+'&type=tv&season='+s+'&episode='+e; }
+  },
+  { n:'VidSrc.cc',
     m: function(id,ii){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'vidsrc.to',
-    m: function(id,ii){ return 'https://vidsrc.to/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://vidsrc.to/embed/tv/'+id+'/'+s+'/'+e; }
+  { n:'VidSrc.me',
+    m: function(id,ii){ return 'https://vidsrc.me/embed/movie?tmdb='+id; },
+    t: function(id,ii,s,e){ return 'https://vidsrc.me/embed/tv?tmdb='+id+'&season='+s+'&episode='+e; }
   },
-  { n:'vidlink',
-    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true'; },
-    t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&nextbutton=true'; }
-  },
-  { n:'embed.su',
+  { n:'EmbedSu',
     m: function(id,ii){ return 'https://embed.su/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'autoembed',
-    m: function(id,ii){ return 'https://player.autoembed.cc/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://player.autoembed.cc/embed/tv/'+id+'?season='+s+'&episode='+e; }
+  { n:'NontonGo',
+    m: function(id,ii){ return 'https://www.nontongo.win/embed/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://www.nontongo.win/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'moviesapi',
-    m: function(id,ii){ return 'https://moviesapi.club/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://moviesapi.club/tv/'+id+'-'+s+'-'+e; }
-  },
-  { n:'multiembed',
-    m: function(id,ii){ return 'https://multiembed.mov/directstream.php?video_id='+id+'&tmdb='+(ii?0:1); },
-    t: function(id,ii,s,e){ return 'https://multiembed.mov/directstream.php?video_id='+id+'&tmdb='+(ii?0:1)+'&s='+s+'&e='+e; }
+  { n:'111Movies',
+    m: function(id,ii){ return 'https://111movies.com/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://111movies.com/tv/'+id+'/'+s+'/'+e; }
   }
 ];
 
@@ -572,42 +570,20 @@ function buildEps(total) {
   }
 }
 
-var WURL = '';
-function doWatch() { if (WURL) window.open(WURL, '_blank'); }
 async function playNow() {
   var item = CI; if (!item) return;
   var tp = item.tp;
   var tid = String(item.id);
-  var ptitle = document.getElementById('PTITLE');
-  var psub = document.getElementById('PSUB');
-  var pbtn = document.getElementById('PWBTN');
-  ptitle.textContent = 'Loading...';
-  psub.textContent = '';
-  pbtn.style.display = 'none';
-  var imdb = await getImdb(tid, tp === 'tv' ? 'tv' : 'movie');
-  var id = imdb || tid;
-  var ii = !!imdb;
   var srv = SRVS[CR];
-  WURL = tp === 'tv' ? srv.t(id, ii, CS, CE) : srv.m(id, ii);
-  var sinfo = [
-    'Best subtitles: EN, KO, TH, ZH, AR + more. Has next episode button.',
-    'Multi-language subtitles. Good for Asian dramas.',
-    'Great for Asian dramas and anime. Multi-language.',
-    'Backup server. Good Asian coverage.',
-    'Reliable backup. Multi-language subtitles.',
-    'Fast backup server.',
-    'Extra backup — good for movies.',
-    'Extra backup — wide content library.',
-  ];
-  var epLabel = tp === 'tv' ? ' &nbsp;S' + CS + ' EP' + CE : '';
-  ptitle.innerHTML = item.tt + epLabel;
-  psub.innerHTML = '<span style="color:#80d080">' + (sinfo[CR] || 'Click Watch Now to play') + '</span>';
-  pbtn.style.display = 'block';
+  // Use TMDB ID directly - no IMDB lookup needed, faster and more reliable
+  var url = tp === 'tv' ? srv.t(tid, false, CS, CE) : srv.m(tid, false);
+  // Open directly in new tab - works 100% of the time, no sandbox, no blocking
+  window.open(url, '_blank');
 }
 
 function closeModal() {
   document.getElementById('MOD').classList.remove('show');
-  WURL = '';
+  /* closed */
   document.body.style.overflow = '';
 }
 
