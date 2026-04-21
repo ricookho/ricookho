@@ -80,7 +80,7 @@ a,button{cursor:pointer}
 /* WATCH LAYOUT */
 .watch-wrap{display:flex;min-height:420px}
 .player-col{flex:1;min-width:0}
-.player-frame{width:100%;aspect-ratio:16/9;background:#000;border-radius:12px 0 0 0;overflow:hidden}
+.player-frame{width:100%;aspect-ratio:16/9;background:#060612;border-radius:12px 0 0 0;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .player-frame iframe{width:100%;height:100%;border:none;display:block}
 /* EPISODE SIDEBAR */
 .ep-col{width:270px;background:var(--s2);border-left:1px solid var(--bd);border-radius:0 12px 0 0;display:flex;flex-direction:column;overflow:hidden}
@@ -242,11 +242,12 @@ footer{background:var(--s1);border-top:1px solid var(--bd);padding:26px 18px;mar
     <button class="modal-close" onclick="closeModal()">&#10005;</button>
     <div class="watch-wrap">
       <div class="player-col">
-        <div class="player-frame">
-          <iframe id="MIF" src="" allowfullscreen
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope"
-            referrerpolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-presentation"></iframe>
+        <div class="player-frame" id="PFRAME" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#060612;border-radius:12px 0 0 0;padding:32px 20px">
+          <div style="font-size:52px">&#127909;</div>
+          <div id="PTITLE" style="font-size:17px;font-weight:600;color:#eeeef8;text-align:center">Pick a server below to watch</div>
+          <div id="PSUB" style="font-size:12px;color:#8080a8;text-align:center;max-width:360px;line-height:1.6"></div>
+          <button id="PWBTN" onclick="doWatch()" style="display:none;background:#e53935;border:none;border-radius:10px;color:#fff;font-size:16px;font-weight:700;padding:13px 40px;cursor:pointer;font-family:inherit">&#9654; Watch Now</button>
+          <div style="font-size:11px;color:#333355;text-align:center">Opens in new tab &bull; Has subtitles inside player</div>
         </div>
       </div>
       <div class="ep-col" id="EPC" style="display:none">
@@ -304,37 +305,37 @@ var CATS = {
 };
 
 var SRVS = [
-  { n:'&#11088; VidLink',
-    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true&primaryColor=e53935'; },
-    t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&primaryColor=e53935&nextbutton=true'; }
+  { n:'vidsrc.me',
+    m: function(id,ii){ return ii ? 'https://vidsrc.me/embed/movie?imdb='+id : 'https://vidsrc.me/embed/movie?tmdb='+id; },
+    t: function(id,ii,s,e){ return ii ? 'https://vidsrc.me/embed/tv?imdb='+id+'&season='+s+'&episode='+e : 'https://vidsrc.me/embed/tv?tmdb='+id+'&season='+s+'&episode='+e; }
   },
-  { n:'VidSrc',
+  { n:'vidsrc.cc',
     m: function(id,ii){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'VidBinge',
-    m: function(id,ii){ return 'https://vidbinge.dev/embed/movie/'+(ii||id); },
-    t: function(id,ii,s,e){ return 'https://vidbinge.dev/embed/tv/'+(ii||id)+'/'+s+'/'+e; }
+  { n:'vidsrc.to',
+    m: function(id,ii){ return 'https://vidsrc.to/embed/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://vidsrc.to/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'SuperFlix',
-    m: function(id,ii){ return 'https://superflixapi.top/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://superflixapi.top/tv/'+id+'/'+s+'/'+e; }
+  { n:'vidlink',
+    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true'; },
+    t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&nextbutton=true'; }
   },
-  { n:'Embed.su',
-    m: function(id,ii){ return 'https://embed.su/embed/movie/'+(ii||id); },
-    t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+(ii||id)+'/'+s+'/'+e; }
+  { n:'embed.su',
+    m: function(id,ii){ return 'https://embed.su/embed/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'AutoEmbed',
+  { n:'autoembed',
     m: function(id,ii){ return 'https://player.autoembed.cc/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://player.autoembed.cc/embed/tv/'+id+'?season='+s+'&episode='+e; }
   },
-  { n:'MoviesAPI',
+  { n:'moviesapi',
     m: function(id,ii){ return 'https://moviesapi.club/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://moviesapi.club/tv/'+id+'-'+s+'-'+e; }
   },
-  { n:'111Movies',
-    m: function(id,ii){ return 'https://111movies.com/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://111movies.com/tv/'+id+'/'+s+'/'+e; }
+  { n:'multiembed',
+    m: function(id,ii){ return 'https://multiembed.mov/directstream.php?video_id='+id+'&tmdb='+(ii?0:1); },
+    t: function(id,ii,s,e){ return 'https://multiembed.mov/directstream.php?video_id='+id+'&tmdb='+(ii?0:1)+'&s='+s+'&e='+e; }
   }
 ];
 
@@ -392,7 +393,7 @@ function mkCard(item) {
   var d = document.createElement('div');
   d.className = 'card';
   d.innerHTML =
-    '<img src="' + ps + '" alt="" loading="lazy" onerror="this.src=\'https://placehold.co/300x450/1a1a35/8080a8?text=No+Image\'">' +
+    '<img src="' + ps + '" alt="" loading="lazy" onerror="this.src='https://placehold.co/300x450/1a1a35/8080a8?text=No+Image'">' +
     '<div class="play-ring"><div class="play-ring-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>' +
     '<div class="card-over"><div class="card-name">' + tt + '</div>' +
     '<div class="card-sub"><span class="card-star">&#9733;</span><span>' + rt + '</span><span>&#183;</span><span>' + (yr||'?') + '</span></div></div>';
@@ -404,7 +405,7 @@ function mkSec(key, label, items) {
   if (!items || !items.length) return null;
   var sec = document.createElement('div'); sec.className = 'sec';
   var head = document.createElement('div'); head.className = 'sec-head';
-  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,\'' + key + '\')">See all &#8594;</span>';
+  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,'' + key + '')">See all &#8594;</span>';
   var grid = document.createElement('div'); grid.className = 'grid';
   items.slice(0, 10).forEach(function(item) { grid.appendChild(mkCard(item)); });
   sec.appendChild(head); sec.appendChild(grid);
@@ -571,24 +572,42 @@ function buildEps(total) {
   }
 }
 
+var WURL = '';
+function doWatch() { if (WURL) window.open(WURL, '_blank'); }
 async function playNow() {
   var item = CI; if (!item) return;
   var tp = item.tp;
   var tid = String(item.id);
+  var ptitle = document.getElementById('PTITLE');
+  var psub = document.getElementById('PSUB');
+  var pbtn = document.getElementById('PWBTN');
+  ptitle.textContent = 'Loading...';
+  psub.textContent = '';
+  pbtn.style.display = 'none';
   var imdb = await getImdb(tid, tp === 'tv' ? 'tv' : 'movie');
   var id = imdb || tid;
   var ii = !!imdb;
   var srv = SRVS[CR];
-  var url = tp === 'tv' ? srv.t(id, ii, CS, CE) : srv.m(id, ii);
-  console.log('[SF] srv=' + CR + ' url=' + url);
-  var f = document.getElementById('MIF');
-  f.src = 'about:blank';
-  setTimeout(function() { f.src = url; }, 150);
+  WURL = tp === 'tv' ? srv.t(id, ii, CS, CE) : srv.m(id, ii);
+  var sinfo = [
+    'Best subtitles: EN, KO, TH, ZH, AR + more. Has next episode button.',
+    'Multi-language subtitles. Good for Asian dramas.',
+    'Great for Asian dramas and anime. Multi-language.',
+    'Backup server. Good Asian coverage.',
+    'Reliable backup. Multi-language subtitles.',
+    'Fast backup server.',
+    'Extra backup — good for movies.',
+    'Extra backup — wide content library.',
+  ];
+  var epLabel = tp === 'tv' ? ' &nbsp;S' + CS + ' EP' + CE : '';
+  ptitle.innerHTML = item.tt + epLabel;
+  psub.innerHTML = '<span style="color:#80d080">' + (sinfo[CR] || 'Click Watch Now to play') + '</span>';
+  pbtn.style.display = 'block';
 }
 
 function closeModal() {
   document.getElementById('MOD').classList.remove('show');
-  document.getElementById('MIF').src = 'about:blank';
+  WURL = '';
   document.body.style.overflow = '';
 }
 
