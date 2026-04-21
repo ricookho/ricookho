@@ -323,17 +323,17 @@ var SRVS = [
     m: function(id){ return 'https://embed.su/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'NontonGo',
-    m: function(id){ return 'https://www.nontongo.win/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://www.nontongo.win/embed/tv/'+id+'/'+s+'/'+e; }
+  { n:'VidSrc.cc',
+    m: function(id){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
   },
   { n:'111Movies',
     m: function(id){ return 'https://111movies.com/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://111movies.com/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'VidSrc.cc',
-    m: function(id){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
+  { n:'NontonGo',
+    m: function(id){ return 'https://www.nontongo.win/embed/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://www.nontongo.win/embed/tv/'+id+'/'+s+'/'+e; }
   }
 ];
 
@@ -403,7 +403,7 @@ function mkSec(key, label, items) {
   if (!items || !items.length) return null;
   var sec = document.createElement('div'); sec.className = 'sec';
   var head = document.createElement('div'); head.className = 'sec-head';
-  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,\'' + key + '\')">See all &#8594;</span>';
+  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,\'' + key + '\')">' + 'See all &#8594;</span>';
   var grid = document.createElement('div'); grid.className = 'grid';
   items.slice(0, 10).forEach(function(item) { grid.appendChild(mkCard(item)); });
   sec.appendChild(head); sec.appendChild(grid);
@@ -575,14 +575,13 @@ async function playNow() {
   var tp = item.tp;
   var tid = String(item.id);
   var srv = SRVS[CR];
-  // Open directly in new tab - bypasses all sandbox/iframe blocking
-  var url = tp === 'tv' ? srv.t(tid, false, CS, CE) : srv.m(tid, false);
+  var url = tp === 'tv' ? srv.t(tid, false, CS, CE) : srv.m(tid);
   window.open(url, '_blank');
 }
 
 function closeModal() {
   document.getElementById('MOD').classList.remove('show');
-  document.getElementById('MIF').src = 'about:blank';
+  
   document.body.style.overflow = '';
 }
 
