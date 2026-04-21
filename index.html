@@ -244,8 +244,9 @@ footer{background:var(--s1);border-top:1px solid var(--bd);padding:26px 18px;mar
       <div class="player-col">
         <div class="player-frame">
           <iframe id="MIF" src="" allowfullscreen
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope"
+            referrerpolicy="no-referrer"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-presentation"></iframe>
         </div>
       </div>
       <div class="ep-col" id="EPC" style="display:none">
@@ -303,37 +304,37 @@ var CATS = {
 };
 
 var SRVS = [
-  { n:'vidsrc.me',
-    m: function(id,ii){ return ii ? 'https://vidsrc.me/embed/movie?imdb='+id : 'https://vidsrc.me/embed/movie?tmdb='+id; },
-    t: function(id,ii,s,e){ return ii ? 'https://vidsrc.me/embed/tv?imdb='+id+'&season='+s+'&episode='+e : 'https://vidsrc.me/embed/tv?tmdb='+id+'&season='+s+'&episode='+e; }
+  { n:'&#11088; VidLink',
+    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true&primaryColor=e53935'; },
+    t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&primaryColor=e53935&nextbutton=true'; }
   },
-  { n:'vidsrc.cc',
+  { n:'VidSrc',
     m: function(id,ii){ return 'https://vidsrc.cc/v2/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://vidsrc.cc/v2/embed/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'vidsrc.to',
-    m: function(id,ii){ return 'https://vidsrc.to/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://vidsrc.to/embed/tv/'+id+'/'+s+'/'+e; }
+  { n:'VidBinge',
+    m: function(id,ii){ return 'https://vidbinge.dev/embed/movie/'+(ii||id); },
+    t: function(id,ii,s,e){ return 'https://vidbinge.dev/embed/tv/'+(ii||id)+'/'+s+'/'+e; }
   },
-  { n:'vidlink',
-    m: function(id,ii){ return 'https://vidlink.pro/movie/'+id+'?autoplay=true'; },
-    t: function(id,ii,s,e){ return 'https://vidlink.pro/tv/'+id+'/'+s+'/'+e+'?autoplay=true&nextbutton=true'; }
+  { n:'SuperFlix',
+    m: function(id,ii){ return 'https://superflixapi.top/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://superflixapi.top/tv/'+id+'/'+s+'/'+e; }
   },
-  { n:'embed.su',
-    m: function(id,ii){ return 'https://embed.su/embed/movie/'+id; },
-    t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+id+'/'+s+'/'+e; }
+  { n:'Embed.su',
+    m: function(id,ii){ return 'https://embed.su/embed/movie/'+(ii||id); },
+    t: function(id,ii,s,e){ return 'https://embed.su/embed/tv/'+(ii||id)+'/'+s+'/'+e; }
   },
-  { n:'autoembed',
+  { n:'AutoEmbed',
     m: function(id,ii){ return 'https://player.autoembed.cc/embed/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://player.autoembed.cc/embed/tv/'+id+'?season='+s+'&episode='+e; }
   },
-  { n:'moviesapi',
+  { n:'MoviesAPI',
     m: function(id,ii){ return 'https://moviesapi.club/movie/'+id; },
     t: function(id,ii,s,e){ return 'https://moviesapi.club/tv/'+id+'-'+s+'-'+e; }
   },
-  { n:'multiembed',
-    m: function(id,ii){ return 'https://multiembed.mov/directstream.php?video_id='+id+'&tmdb='+(ii?0:1); },
-    t: function(id,ii,s,e){ return 'https://multiembed.mov/directstream.php?video_id='+id+'&tmdb='+(ii?0:1)+'&s='+s+'&e='+e; }
+  { n:'111Movies',
+    m: function(id,ii){ return 'https://111movies.com/movie/'+id; },
+    t: function(id,ii,s,e){ return 'https://111movies.com/tv/'+id+'/'+s+'/'+e; }
   }
 ];
 
@@ -391,7 +392,7 @@ function mkCard(item) {
   var d = document.createElement('div');
   d.className = 'card';
   d.innerHTML =
-    '<img src="' + ps + '" alt="" loading="lazy" onerror="this.src='https://placehold.co/300x450/1a1a35/8080a8?text=No+Image'">' +
+    '<img src="' + ps + '" alt="" loading="lazy" onerror="this.src=\'https://placehold.co/300x450/1a1a35/8080a8?text=No+Image\'">' +
     '<div class="play-ring"><div class="play-ring-inner"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>' +
     '<div class="card-over"><div class="card-name">' + tt + '</div>' +
     '<div class="card-sub"><span class="card-star">&#9733;</span><span>' + rt + '</span><span>&#183;</span><span>' + (yr||'?') + '</span></div></div>';
@@ -403,7 +404,7 @@ function mkSec(key, label, items) {
   if (!items || !items.length) return null;
   var sec = document.createElement('div'); sec.className = 'sec';
   var head = document.createElement('div'); head.className = 'sec-head';
-  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,'' + key + '')">See all &#8594;</span>';
+  head.innerHTML = '<div class="sec-title">' + label + '</div><span class="sec-more" onclick="nav(null,\'' + key + '\')">See all &#8594;</span>';
   var grid = document.createElement('div'); grid.className = 'grid';
   items.slice(0, 10).forEach(function(item) { grid.appendChild(mkCard(item)); });
   sec.appendChild(head); sec.appendChild(grid);
